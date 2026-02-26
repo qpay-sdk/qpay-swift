@@ -1,5 +1,7 @@
 # QPay Swift SDK
 
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+
 A Swift SDK for the QPay V2 payment API. Supports iOS 15+ and macOS 12+.
 
 Built with Swift concurrency (async/await) and actor isolation for thread-safe token management.
