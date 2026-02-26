@@ -43,8 +43,33 @@ final class MockURLProtocol: URLProtocol {
     }
 
     override func startLoading() {
-        MockURLProtocol.lastRequest = request
-        MockURLProtocol.capturedRequests.append(request)
+        // URLSession converts httpBody to httpBodyStream when sending through
+        // URLProtocol. Reconstruct httpBody from the stream so tests can inspect it.
+        var capturedRequest = request
+        if capturedRequest.httpBody == nil, let stream = capturedRequest.httpBodyStream {
+            stream.open()
+            var data = Data()
+            let bufferSize = 1024
+            let buffer = UnsafeMutablePointer<UInt8>.allocate(capacity: bufferSize)
+            defer {
+                buffer.deallocate()
+                stream.close()
+            }
+            while stream.hasBytesAvailable {
+                let bytesRead = stream.read(buffer, maxLength: bufferSize)
+                if bytesRead > 0 {
+                    data.append(buffer, count: bytesRead)
+                } else {
+                    break
+                }
+            }
+            if !data.isEmpty {
+                capturedRequest.httpBody = data
+            }
+        }
+
+        MockURLProtocol.lastRequest = capturedRequest
+        MockURLProtocol.capturedRequests.append(capturedRequest)
 
         guard let handler = MockURLProtocol.requestHandler else {
             let error = NSError(
@@ -57,7 +82,7 @@ final class MockURLProtocol: URLProtocol {
         }
 
         do {
-            let (response, data) = try handler(request)
+            let (response, data) = try handler(capturedRequest)
             client?.urlProtocol(self, didReceive: response, cacheStoragePolicy: .notAllowed)
             client?.urlProtocol(self, didLoad: data)
             client?.urlProtocolDidFinishLoading(self)
