@@ -12,7 +12,7 @@ Add the dependency to your `Package.swift`:
 
 ```swift
 dependencies: [
-    .package(url: "https://github.com/your-org/qpay-swift.git", from: "1.0.0")
+    .package(url: "https://github.com/qpay-sdk/qpay-swift.git", from: "1.0.0")
 ]
 ```
 
@@ -29,7 +29,7 @@ Then add `"QPay"` to your target's dependencies:
 
 1. Open your project in Xcode
 2. Go to **File > Add Package Dependencies...**
-3. Enter the repository URL: `https://github.com/your-org/qpay-swift.git`
+3. Enter the repository URL: `https://github.com/qpay-sdk/qpay-swift.git`
 4. Select the version rule and click **Add Package**
 5. Select the `QPay` library and add it to your target
 
