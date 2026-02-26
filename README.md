@@ -1,5 +1,6 @@
 # QPay Swift SDK
 
+[![CI](https://github.com/qpay-sdk/qpay-swift/actions/workflows/ci.yml/badge.svg)](https://github.com/qpay-sdk/qpay-swift/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
 A Swift SDK for the QPay V2 payment API. Supports iOS 15+ and macOS 12+.
